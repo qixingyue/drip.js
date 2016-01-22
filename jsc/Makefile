@@ -1,6 +1,6 @@
 SEELIB=-I /data/see/include/ -L /data/see/lib/ -lsee
 
-aims=jsstr jsfile jsfunc jsmodule
+aims=jsstr jsfile jsfunc jsmodule drip
 
 .PHONY:all
 
@@ -15,8 +15,11 @@ jsfunc:jsfunc.c addFunc.c
 jsmodule:jsmodule.c mod_File.c
 	gcc -g -o jsmodule jsmodule.c $(SEELIB)
 
+drip:drip.c
+	gcc -g -o drip drip.c $(SEELIB)
+
 test:all
-	./jsstr	&& ./jsfunc && ./jsfile && ./jsmodule
+	./jsstr	&& ./jsfunc && ./jsfile && ./jsmodule && ./drip
 
 clean:
 	rm $(aims) 
