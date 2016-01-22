@@ -9,11 +9,14 @@ all:$(aims)
 jsstr:js.c
 	gcc -g -o jsstr js.c $(SEELIB)
 jsfile:jsf.c
-	gcc -g -o jsfile jsf.c -I /data/see/include/ -L /data/see/lib/ -lsee
+	gcc -g -o jsfile jsf.c $(SEELIB)
 jsfunc:jsfunc.c addFunc.c
-	gcc -g -o jsfunc jsfunc.c -I /data/see/include/ -L /data/see/lib/ -lsee
+	gcc -g -o jsfunc jsfunc.c $(SEELIB)
 jsmodule:jsmodule.c mod_File.c
-	gcc -g -o jsmodule jsmodule.c -I /data/see/include/ -L /data/see/lib/ -lsee
+	gcc -g -o jsmodule jsmodule.c $(SEELIB)
+
+test:all
+	./jsstr	&& ./jsfunc && ./jsfile && ./jsmodule
 
 clean:
 	rm $(aims) 
