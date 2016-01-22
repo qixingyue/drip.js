@@ -1,4 +1,4 @@
-SEELIB=-I /data/see/include/ -L /data/see/lib/ -lsee
+SEELIB=-I /data/see/include/ -L /data/see/lib/ -lsee -lgc -L/data/boehmgc/lib/
 
 aims=jsstr jsfile jsfunc jsmodule drip
 
