@@ -68,7 +68,7 @@
 #define HAVE_FINITE 1
 
 /* Define to 1 if you have the `finitef' function. */
-#define HAVE_FINITEF 1
+/* #undef HAVE_FINITEF */
 
 /* Define to 1 if you have the <float.h> header file. */
 #define HAVE_FLOAT_H 1
@@ -122,13 +122,13 @@
 #define HAVE_ISINF 1
 
 /* Define to 1 if you have the `isinff' function. */
-#define HAVE_ISINFF 1
+/* #undef HAVE_ISINFF */
 
 /* Define to 1 if you have the `isnan' function. */
 #define HAVE_ISNAN 1
 
 /* Define to 1 if you have the `isnanf' function. */
-#define HAVE_ISNANF 1
+/* #undef HAVE_ISNANF */
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
@@ -297,7 +297,7 @@
 #define SIZEOF_SIGNED_INT 4
 
 /* The size of `signed long', as computed by sizeof. */
-#define SIZEOF_SIGNED_LONG 4
+#define SIZEOF_SIGNED_LONG 8
 
 /* The size of `signed LONGLONG', as computed by sizeof. */
 #define SIZEOF_SIGNED_LONGLONG 0
@@ -312,7 +312,7 @@
 #define SIZEOF_UNSIGNED_INT 4
 
 /* The size of `unsigned long', as computed by sizeof. */
-#define SIZEOF_UNSIGNED_LONG 4
+#define SIZEOF_UNSIGNED_LONG 8
 
 /* The size of `unsigned LONGLONG', as computed by sizeof. */
 #define SIZEOF_UNSIGNED_LONGLONG 0

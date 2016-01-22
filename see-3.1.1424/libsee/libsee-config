@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix="/usr/local"
+prefix="/data/see"
 exec_prefix="${prefix}"
 libdir="${exec_prefix}/lib"
 includedir="${prefix}/include"
@@ -9,7 +9,7 @@ case "$1" in
     --version) 
 	echo "see-3.1.1424" ;;
     --libs)
-	echo "-L$libdir -lsee  -lm  " ;;
+	echo "-L$libdir -lsee   " ;;
     --cppflags)
 	echo "-I$includedir" ;;
     --prefix)
