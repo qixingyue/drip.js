@@ -1,5 +1,0 @@
-version.lo: version.c ../include/config.h ../include/see/version.h
-
-../include/config.h:
-
-../include/see/version.h:
