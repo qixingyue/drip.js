@@ -1,0 +1,8 @@
+version.lo: version.c /usr/include/stdc-predef.h ../include/config.h \
+ ../include/see/version.h
+
+/usr/include/stdc-predef.h:
+
+../include/config.h:
+
+../include/see/version.h:
