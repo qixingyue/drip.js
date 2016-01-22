@@ -16,7 +16,7 @@ https://www.adaptive-enterprises.com/~d/software/see/
 
 ## INSTALL
 
-`
+```
 tar zxvf see-3.1.1424.tar.gz
 unzip boehm-gc.zip
 cd boehm-gc
@@ -28,4 +28,4 @@ cd see-3.1.1424
 ./configure --prefix=/your/see --with-boehm-gc=/your/boehm-gc/
 make 
 make install
-`
+```
