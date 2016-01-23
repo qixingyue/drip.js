@@ -34,3 +34,13 @@ cd see-3.1.1424
 make 
 make install
 ```
+
+## Tips:
+
+* Mac OSX You may need Change : </br>
+
+293 CC = gcc </br>
+
+TO </br>
+
+293 CC = gcc -D _XOPEN_SOURCE=600 </br>
