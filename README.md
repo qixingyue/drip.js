@@ -14,7 +14,8 @@ https://github.com/coapp-packages/boehm-gc </br>
 
 *SEE:* </br>
 https://www.adaptive-enterprises.com/~d/software/see/see-3.1.1424.tar.gz </br>
-https://www.adaptive-enterprises.com/~d/software/see/
+https://www.adaptive-enterprises.com/~d/software/see/ </br>
+http://anyapi.sinaapp.com/USAGE.html
 
 ## INSTALL
 
@@ -37,10 +38,11 @@ make install
 
 ## Tips:
 
-* Mac OSX You may need Change : </br>
+* Mac OSX You may need Change : 
+```
+FROM : 
+293 CC = gcc 
 
-293 CC = gcc </br>
-
-TO </br>
-
+TO 
 293 CC = gcc -D _XOPEN_SOURCE=600 </br>
+```
