@@ -22,4 +22,6 @@ test:all
 	./jsstr	&& ./jsfunc && ./jsfile && ./jsmodule && ./drip
 
 clean:
-	rm $(aims) 
+	rm -rf $(aims) 
+	rm -rf *.dSYM 
+	rm -rf t-File.out
