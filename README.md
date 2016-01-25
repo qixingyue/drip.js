@@ -6,7 +6,6 @@
 *  more flexible than node.js
 *  more extended than node.js
 
-
 ## NEED FILES 
 
 *boehm-gc:* </br>
@@ -46,3 +45,5 @@ FROM :
 TO 
 293 CC = gcc -D _XOPEN_SOURCE=600 </br>
 ```
+
+* On Mac With-GC may have some problems.
