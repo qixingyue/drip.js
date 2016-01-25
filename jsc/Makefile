@@ -12,7 +12,7 @@ jsfile:jsf.c
 	gcc -g -o jsfile jsf.c $(SEELIB)
 jsfunc:jsfunc.c addFunc.c
 	gcc -g -o jsfunc jsfunc.c $(SEELIB)
-jsmodule:jsmodule.c mod_File.c
+jsmodule:jsmodule.c mod_File.c mod_Sample.c
 	gcc -g -o jsmodule jsmodule.c $(SEELIB)
 
 drip:drip.c

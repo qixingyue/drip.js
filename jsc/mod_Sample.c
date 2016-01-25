@@ -25,6 +25,7 @@
 static int Sample_mod_init();
 static void Sample_alloc(struct SEE_interpreter *);
 static void Sample_init(struct SEE_interpreter *);
+static void sample_construct(struct SEE_interpreter *,struct SEE_object *, struct SEE_object *,int,struct SEE_value **, struct SEE_value *) ;
 
 static struct SEE_string *STR(Sample) ;
 
@@ -42,6 +43,23 @@ struct sample_private{
 
 };
 
+struct sample_object{
+	struct SEE_native        native;
+};
+
+static struct SEE_objectclass sample_constructor_class = {
+        "Sample",                         /* Class */
+        SEE_native_get,                 /* Get */
+        SEE_native_put,                 /* Put */
+        SEE_native_canput,              /* CanPut */
+        SEE_native_hasproperty,         /* HasProperty */
+        SEE_native_delete,              /* Delete */
+        SEE_native_defaultvalue,        /* DefaultValue */
+        SEE_native_enumerator,          /* DefaultValue */
+        sample_construct,                 /* Construct */
+        NULL                            /* Call */
+};
+
 static int Sample_mod_init() {
 	STR(Sample) = SEE_intern_global("Sample");
 	return 0;
@@ -52,5 +70,14 @@ static void Sample_alloc(struct SEE_interpreter *interp) {
 }
 
 static void Sample_init(struct SEE_interpreter *interp) {
-
+	struct SEE_value v;
+	struct SEE_object *Sample;
+	Sample = (struct SEE_object *)SEE_NEW(interp, struct sample_object);
+    SEE_native_init((struct SEE_native *)Sample, interp,&sample_constructor_class,interp->Object_prototype);
+    PUTOBJ(interp->Global, Sample, Sample);
 }
+
+static void sample_construct( struct SEE_interpreter *interp, struct SEE_object *self, struct SEE_object *thisobj, int argc, struct SEE_value **argv, struct SEE_value *res) {
+	SEE_SET_UNDEFINED(res);
+}
+
