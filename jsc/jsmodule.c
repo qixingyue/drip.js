@@ -18,8 +18,8 @@ int main(){
 
 	add_methods(interpreter_ptr, interpreter_ptr->Global, global_methods);
 
-	FILE *f = fopen("./file.js","r");
-	input = SEE_input_file(interpreter_ptr,f,"./file.js",NULL);
+	FILE *f = fopen("./sample.js","r");
+	input = SEE_input_file(interpreter_ptr,f,"./sample.js",NULL);
 
 	SEE_TRY (interpreter_ptr,try_ctx) {
 		SEE_Global_eval(interpreter_ptr,input,&result);

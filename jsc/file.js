@@ -32,3 +32,4 @@ test('g.read()', "sting\n");
 test('g.eof()', true);
 test('g.close()', undefined);
 test('g.eof()', undefined);
+
