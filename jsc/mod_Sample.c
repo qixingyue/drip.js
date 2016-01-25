@@ -4,6 +4,24 @@
 #define STR(name) s##name
 #endif
 
+#ifndef PRIVATE
+#define PRIVATE(interp) ((struct sample_private*)SEE_MODULE_PRIVATE(interp, &Sample_Module))
+#endif
+
+#ifndef PUTOBJ
+#define PUTOBJ(parent, name, obj)                                       \
+        SEE_SET_OBJECT(&v, obj);                                        \
+        SEE_OBJECT_PUT(interp, parent, STR(name), &v, SEE_ATTR_DEFAULT);
+#endif
+
+#ifndef PUTFUNC
+#define PUTFUNC(obj, name, len)                                         \
+        SEE_SET_OBJECT(&v, SEE_cfunction_make(interp, file_proto_##name,\
+                STR(name), len));                                       \
+        SEE_OBJECT_PUT(interp, obj, STR(name), &v, SEE_ATTR_DEFAULT);
+#endif
+
+
 static int Sample_mod_init();
 static void Sample_alloc(struct SEE_interpreter *);
 static void Sample_init(struct SEE_interpreter *);

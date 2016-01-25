@@ -3,6 +3,7 @@
 
 #include "addFunc.c"
 #include "mod_File.c"
+#include "mod_Sample.c"
 
 int main(){
 	struct SEE_interpreter interpreter;
@@ -22,7 +23,7 @@ int main(){
 
 	SEE_TRY (interpreter_ptr,try_ctx) {
 		SEE_Global_eval(interpreter_ptr,input,&result);
-		SEE_PrintValue(interpreter_ptr,&result,NULL);
+		//SEE_PrintValue(interpreter_ptr,&result,NULL);
 	}
 
 	SEE_INPUT_CLOSE(input);	
