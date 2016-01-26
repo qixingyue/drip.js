@@ -14,6 +14,7 @@ int main(){
 
 	SEE_init();
 	SEE_module_add(&File_module);
+	SEE_module_add(&Sample_Module);
 	SEE_interpreter_init(interpreter_ptr);
 
 	add_methods(interpreter_ptr, interpreter_ptr->Global, global_methods);
