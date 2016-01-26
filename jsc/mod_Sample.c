@@ -16,7 +16,7 @@
 
 #ifndef PUTFUNC
 #define PUTFUNC(obj, name, len)                                         \
-        SEE_SET_OBJECT(&v, SEE_cfunction_make(interp, file_proto_##name,\
+        SEE_SET_OBJECT(&v, SEE_cfunction_make(interp, sample_proto_##name,\
                 STR(name), len));                                       \
         SEE_OBJECT_PUT(interp, obj, STR(name), &v, SEE_ATTR_DEFAULT);
 #endif
@@ -26,8 +26,10 @@ static int Sample_mod_init();
 static void Sample_alloc(struct SEE_interpreter *);
 static void Sample_init(struct SEE_interpreter *);
 static void sample_construct(struct SEE_interpreter *,struct SEE_object *, struct SEE_object *,int,struct SEE_value **, struct SEE_value *) ;
+static void sample_finalize(struct SEE_interpreter *, void *, void *);
+static void sample_proto_sample_method(struct SEE_interpreter *, struct SEE_object *, struct SEE_object *, int , struct SEE_value **, struct SEE_value *);
 
-static struct SEE_string *STR(Sample) ;
+static struct SEE_string *STR(Sample),*STR(sample_method);
 
 struct SEE_module Sample_Module = {
 	SEE_MODULE_MAGIC,               /* magic */
@@ -40,7 +42,7 @@ struct SEE_module Sample_Module = {
 };
 
 struct sample_private{
-
+	struct SEE_object *sample_protype;
 };
 
 struct sample_object{
@@ -62,6 +64,7 @@ static struct SEE_objectclass sample_constructor_class = {
 
 static int Sample_mod_init() {
 	STR(Sample) = SEE_intern_global("Sample");
+	STR(sample_method) = SEE_intern_global("sample_method");
 	return 0;
 }
 
@@ -71,13 +74,34 @@ static void Sample_alloc(struct SEE_interpreter *interp) {
 
 static void Sample_init(struct SEE_interpreter *interp) {
 	struct SEE_value v;
-	struct SEE_object *Sample;
-	Sample = (struct SEE_object *)SEE_NEW(interp, struct sample_object);
+	struct SEE_object *Sample,*Sample_protype;
+
+	//处理继承关系
+	Sample_protype = (struct SEE_object *)SEE_NEW(interp, struct SEE_object);
+    SEE_native_init((struct SEE_native *)Sample, interp,&sample_constructor_class,interp->Object_prototype);
+    PUTFUNC(Sample_protype,sample_method, 0)
+
+	Sample = (struct SEE_object *)SEE_NEW(interp, struct SEE_native);
+	//不会访问到SEE_native的properties
     SEE_native_init((struct SEE_native *)Sample, interp,&sample_constructor_class,interp->Object_prototype);
     PUTOBJ(interp->Global, Sample, Sample);
 }
 
 static void sample_construct( struct SEE_interpreter *interp, struct SEE_object *self, struct SEE_object *thisobj, int argc, struct SEE_value **argv, struct SEE_value *res) {
-	SEE_SET_UNDEFINED(res);
+
+	struct sample_object *sample_object;	
+	sample_object = SEE_NEW_FINALIZE(interp,struct sample_object,sample_finalize,NULL);
+	SEE_native_init(&sample_object->native, interp, &sample_constructor_class, interp->Object_prototype);
+	SEE_SET_OBJECT(res, (struct SEE_object *)sample_object);
 }
+
+static void sample_proto_sample_method(struct SEE_interpreter *interp, struct SEE_object *self, struct SEE_object *thisobj, int argc, struct SEE_value **argv, struct SEE_value *res) { 
+
+}
+
+//处理释放关系,SEE自动执行
+static void sample_finalize(struct SEE_interpreter *interp, void *sample_object, void *other_params) {
+
+}
+
 

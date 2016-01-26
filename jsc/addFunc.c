@@ -25,7 +25,7 @@ static void print_fn(struct SEE_interpreter *interp, struct SEE_object *self, st
   }
 	printf("\n");
 	fflush(stdout);
-	SEE_SET_UNDEFINED(res);
+	SEE_SET_NUMBER(res,i);
 }
 
 
