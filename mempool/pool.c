@@ -2,7 +2,10 @@
 
 pool_t * pool_new(size_t max_block,over_size_t_handler too_much_mem_handler) {
 	pool_t *pool;
-	pool = (pool_t *)malloc(sizeof (pool_t));
+	default_mem_sys.malloc = default_malloc;
+	default_mem_sys.free = default_free;
+
+	pool = (pool_t *)default_mem_sys.malloc(sizeof (pool_t));
 	if (pool) {
 		pool->blocks = NULL;
 		pool->next_alloc = INITIAL_BLOCK_SIZE;
@@ -21,9 +24,9 @@ void pool_destroy(pool_t *pool) {
 	while (pool->blocks) {
 		block = pool->blocks;
 		pool->blocks = block->next;
-		free(block);
+		default_mem_sys.free(block);
 	}
-	free(pool);
+	default_mem_sys.free(pool);
 }
 
 void * pool_malloc(pool_t *pool, size_t size) {
@@ -58,7 +61,7 @@ void * pool_malloc(pool_t *pool, size_t size) {
 		while (pool->next_alloc < spc + sizeof (struct block))
 			pool->next_alloc *= 2;
 
-		block = (struct block *)malloc(pool->next_alloc);
+		block = (struct block *)default_mem_sys.malloc(pool->next_alloc);
 		if (!block) {
 			return NULL;
 		}
@@ -76,4 +79,12 @@ void * pool_malloc(pool_t *pool, size_t size) {
 void default_too_much_hanlder(size_t next_alloc){
 	printf("TOO MUCH BLOCKS CURRENT NEXT BLOCK : %d \n",next_alloc);
 	exit(0);
+}
+
+static void *default_malloc(size_t size){
+	return malloc(size);
+}
+
+static void default_free(void *ptr){
+	free(ptr);
 }

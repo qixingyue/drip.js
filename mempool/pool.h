@@ -49,11 +49,15 @@ struct pool {
 pool_t * pool_new(size_t,over_size_t_handler);
 void pool_destroy(pool_t *);
 void * pool_malloc(pool_t *, size_t );
-static void default_too_much_hanlder(size_t next_alloc);
+
+static void default_too_much_hanlder(size_t);
+static void* default_malloc(size_t);
+static void default_free(void*);
 
 static memsys default_mem_sys = {
 	malloc,free
 };
+
 pool_t *pool;
 
 #endif
