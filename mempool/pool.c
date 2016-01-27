@@ -1,45 +1,23 @@
-#include <stdlib.h>
 #include "pool.h"
 
-/*
- * Simple pool memory allocator.
- * Memory is allocated from large blocks of store
- * and released in one hit, at the very end.
- * Allocations grow exponentially.
- */
-
-#define INITIAL_BLOCK_SIZE	8192
-
-struct block {
-	struct block *next;
-	char *p;	/* Pointer into block storage */
-	int avail;	/* bytes available after p */
-};
-
-struct pool {
-	struct block *blocks;
-	int next_alloc;	/* size of next block */
-};
-
-/* Creates a new memory pool */
-struct pool * pool_new() {
-	struct pool *pool;
-
-	pool = (struct pool *)malloc(sizeof (struct pool));
+pool_t * pool_new(size_t max_block,over_size_t_handler too_much_mem_handler) {
+	pool_t *pool;
+	pool = (pool_t *)malloc(sizeof (pool_t));
 	if (pool) {
 		pool->blocks = NULL;
 		pool->next_alloc = INITIAL_BLOCK_SIZE;
+		pool->max_block = max_block;
+		if(NULL == too_much_mem_handler) {
+			too_much_mem_handler = default_too_much_hanlder;
+		}
+		pool->too_much_handler = too_much_mem_handler;
 	}
 	return pool;
 }
 
-/* Destroys a memory pool */
-void
-pool_destroy(pool)
-	struct pool *pool;
-{
+void pool_destroy(pool_t *pool) {
 	struct block *block;
-
+	_assert(NULL == pool,"POOL CANT'T BE NULL\n");
 	while (pool->blocks) {
 		block = pool->blocks;
 		pool->blocks = block->next;
@@ -48,15 +26,16 @@ pool_destroy(pool)
 	free(pool);
 }
 
-/* Allocates from a memory pool */
-void * pool_malloc(struct pool *pool, size_t size) {
+void * pool_malloc(pool_t *pool, size_t size) {
 	int spc;
 	struct block *block;
 	char *ptr;
 
+	_assert(NULL == pool,"POOL CANT'T BE NULL\n");
+
 	/* Round size up to align to nearest ptr */
 	// 跟sizeof (void *) 对齐
-	spc = (size - 1 + sizeof (void *)) & ~(sizeof (void *) - 1);
+	spc = (size + ALIGN_SIZE ) & ~ ALIGN_SIZE;
 
   	for (;;) {
 		/* Search blocks for enough space */
@@ -69,24 +48,32 @@ void * pool_malloc(struct pool *pool, size_t size) {
 			}
 		}
 
+		if(pool->next_alloc >= pool->max_block) {
+			pool->too_much_handler(pool->next_alloc);
+			return NULL;
+		}
+
 		/* No block had enough space. Make more blocks! */
 		//扩大内存区
 		while (pool->next_alloc < spc + sizeof (struct block))
 			pool->next_alloc *= 2;
 
 		block = (struct block *)malloc(pool->next_alloc);
-		if (!block)
+		if (!block) {
 			return NULL;
+		}
 		//指向后边的内存区域
-		block->p = (char *)(block + 1);
+		block->p = (void *)(block + 1);
 		//设置可用空间
 		block->avail = pool->next_alloc - sizeof (struct block);
 		//把分配的块加入到pool里边
 		block->next = pool->blocks;
 		pool->blocks = block;
-
 		pool->next_alloc *= 2;
 	}
 }
 
-
+void default_too_much_hanlder(size_t next_alloc){
+	printf("TOO MUCH BLOCKS CURRENT NEXT BLOCK : %d \n",next_alloc);
+	exit(0);
+}
