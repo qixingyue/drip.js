@@ -1,6 +1,6 @@
 #include "pool.h"
 
-pool_t * pool_new(size_t max_block,over_size_t_handler too_much_mem_handler) {
+pool_t * pool_new(size_t max_memory,over_size_t_handler too_much_mem_handler) {
 	pool_t *pool;
 	default_mem_sys.malloc = default_malloc;
 	default_mem_sys.free = default_free;
@@ -9,7 +9,8 @@ pool_t * pool_new(size_t max_block,over_size_t_handler too_much_mem_handler) {
 	if (pool) {
 		pool->blocks = NULL;
 		pool->next_alloc = INITIAL_BLOCK_SIZE;
-		pool->max_block = max_block;
+		pool->max_memory = max_memory;
+		pool->current_memory = 0;
 		if(NULL == too_much_mem_handler) {
 			too_much_mem_handler = default_too_much_hanlder;
 		}
@@ -51,8 +52,8 @@ void * pool_malloc(pool_t *pool, size_t size) {
 			}
 		}
 
-		if(pool->next_alloc >= pool->max_block) {
-			pool->too_much_handler(pool->next_alloc);
+		if(pool->current_memory >= pool->max_memory) {
+			pool->too_much_handler(pool->current_memory);
 			return NULL;
 		}
 
@@ -65,6 +66,7 @@ void * pool_malloc(pool_t *pool, size_t size) {
 		if (!block) {
 			return NULL;
 		}
+		pool->current_memory += pool->next_alloc;
 		//指向后边的内存区域
 		block->p = (void *)(block + 1);
 		//设置可用空间
@@ -76,8 +78,8 @@ void * pool_malloc(pool_t *pool, size_t size) {
 	}
 }
 
-void default_too_much_hanlder(size_t next_alloc){
-	printf("TOO MUCH BLOCKS CURRENT NEXT BLOCK : %d \n",next_alloc);
+void default_too_much_hanlder(size_t current_memory){
+	printf("TOO MUCH MEMORY USED CURRENT MEMORY : %ld \n",current_memory);
 	exit(0);
 }
 

@@ -16,7 +16,7 @@
 //为每个原子请求分配一个pool,使用完成以后，释放掉整个的pool
 //而非释放单纯的原子结构
 
-#define INITIAL_BLOCK_SIZE	8192
+#define INITIAL_BLOCK_SIZE 64
 #define ALIGN_SIZE (sizeof(void*) - 1)
 
 #define POOL_RUN(max,handler) \
@@ -41,7 +41,8 @@ struct block {
 struct pool {
 	struct block *blocks;
 	size_t next_alloc;
-	size_t max_block;
+	size_t max_memory;
+	size_t current_memory;
 	over_size_t_handler too_much_handler;
 };
 
