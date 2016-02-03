@@ -10,7 +10,7 @@ pool_t * pool_new(size_t max_memory,over_size_t_handler too_much_mem_handler) {
 		pool->blocks = NULL;
 		pool->next_alloc = INITIAL_BLOCK_SIZE;
 		pool->max_memory = max_memory;
-		pool->current_memory = 0;
+		pool->current_memory = sizeof (pool_t);
 		if(NULL == too_much_mem_handler) {
 			too_much_mem_handler = default_too_much_hanlder;
 		}
